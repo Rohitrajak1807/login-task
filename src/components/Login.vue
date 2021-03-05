@@ -6,8 +6,8 @@
         b-form-group(label="User ID" label-for="user-name")
           b-form-input#user-name(v-model="form.id" required=true placeholder="User ID")
         b-form-group(label="Password" label-for="password")
-          b-form-input#password(v-model="form.password" type="password" required="true" placeholder="Password")
-        b-button(type="submit" variant="primary" v-on:click="") Submit
+          b-form-input#password(v-model="form.password" type="password" required=true placeholder="Password")
+        b-button(type="submit" variant="primary" v-on:click="onSubmit") Login
 </template>
 
 <script>
@@ -27,9 +27,11 @@ export default {
     }
   },
   methods: {
-    onSubmit: function (event) {
+    onSubmit: async function (event) {
       event.preventDefault()
-      this.$router.push({name: 'Profile'})
+      let response = await this.axios.post('http://localhost:8000/login', this.form)
+      console.log(response)
+      await this.$router.push('/profile')
     }
   }
 }
