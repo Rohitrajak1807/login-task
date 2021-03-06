@@ -7,7 +7,7 @@
           b-form-input#first-name(v-model="form.firstName" type="text" required=true placeholder="First Name")
         b-form-group(label="Last Name" label-for="last-name")
           b-form-input#last-name(v-model="form.lastName" type="text" required=true placeholder="Last Name")
-        b-button(type="submit" variant="primary" v-on:click="") Update Profile
+        b-button(type="submit" variant="primary" v-on:click="updateProfile") Update Profile
 </template>
 
 <script>
@@ -29,7 +29,11 @@ export default {
   },
   methods: {
     updateProfile: function () {
-      this.axios.put('http://localhost:8000/update-profile', this.form)
+      this.axios.put('http://localhost:8000/update-profile', this.form, {
+        headers: {
+          'Authorization': `Bearer ${this.$store.getters.token}`
+        }
+      })
         .then((res) => {
           console.log(res)
         })

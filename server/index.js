@@ -27,7 +27,7 @@ app.route('/login').post(async function (req, res) {
     const user = await User.findOne({
       email: email
     }).lean()
-    if (!user || !bcrypt.compare(plainTextPassword, user.password)) {
+    if (!user || !(await bcrypt.compare(plainTextPassword, user.password))) {
       return res.status(400).send({
         error: {
           code: 400,
@@ -77,6 +77,22 @@ app.route('/signup').post(async function (req, res) {
       })
     }
   }
+})
+
+app.route('/update-profile').put(async function (req, res) {
+  const token = req.headers.authorization.split(' ')[1]
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if (err) {
+      console.log(err)
+      return res.status(400).send({
+        error: {
+          message: 'Please try again',
+          code: 400
+        }
+      })
+    }
+  })
+  res.send('')
 })
 
 app.listen(PORT, () => console.log(`server started on ${PORT}`))
