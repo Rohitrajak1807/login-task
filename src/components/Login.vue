@@ -27,11 +27,23 @@ export default {
     }
   },
   methods: {
-    onSubmit: async function (event) {
+    onSubmit: function (event) {
       event.preventDefault()
-      let response = await this.axios.post('http://localhost:8000/login', this.form)
-      console.log(response)
-      await this.$router.push('/profile')
+      this.axios.post('http://localhost:8000/login', this.form)
+        .then((res) => {
+          console.log(res)
+          this.$store.commit('storeLoggedInUser', res.data.user)
+          this.$store.commit('storeToken', res.data.auth.token)
+          this.$router.push({path: '/profile'})
+        })
+        .catch((e) => {
+          console.log(e.response)
+          this.$bvToast.toast(e.response.data.error.message, {
+            variant: 'danger',
+            autoHideDelay: 5000,
+            title: 'Error'
+          })
+        })
     }
   }
 }

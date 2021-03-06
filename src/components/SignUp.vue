@@ -29,23 +29,23 @@ export default {
     }
   },
   methods: {
-    signUp: async function () {
-      let res = await this.axios.post('http://localhost:8000/signup', this.form).catch((err) => {
-        console.error(JSON.parse(JSON.stringify(err)))
-      })
-      console.log(res)
-      // try {
-      //   res = await this.axios.post('http://localhost:8000/signup', this.form)
-      //   console.log(res)
-      // } catch (e) {
-      //   console.log(JSON.parse(JSON.stringify(e)))
-      //   console.log(res)
-      //   this.$bvToast.toast(e.message, {
-      //     variant: 'danger',
-      //     autoHideDelay: 5000,
-      //     title: 'Error'
-      //   })
-      // }
+    signUp: function (event) {
+      event.preventDefault()
+      this.axios.post('http://localhost:8000/signup', this.form)
+        .then((res) => {
+          console.log(res)
+          this.$router.push({path: '/profile'})
+        })
+        .catch((e) => {
+          console.log(e.response.data.error)
+          this.$bvToast.toast(
+            e.response.data.error.message, {
+              variant: 'danger',
+              autoHideDelay: 5000,
+              title: 'Error'
+            }
+          )
+        })
     }
   }
 }
