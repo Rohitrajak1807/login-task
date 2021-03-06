@@ -1,9 +1,8 @@
-const toast = function (message, title, timeout, type) {
-  this.$bvToast.toast(message, {
-    title: title || 'Error',
-    autoHideDelay: timeout || 5000,
-    variant: type || 'danger'
-  })
+const toastConfig = {}
+toastConfig.default = {
+  title: 'Error',
+  variant: 'danger',
+  autoHideDelay: 5000
 }
 
-export default toast
+export default toastConfig

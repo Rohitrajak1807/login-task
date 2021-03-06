@@ -12,7 +12,7 @@
 
 <script>
 import NavLoggedIn from './nav/NavLoggedIn'
-import toast from '../utils/ui-utils'
+import toastConfig from '../utils/ui-utils'
 
 export default {
   name: 'Profile',
@@ -35,7 +35,7 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-          toast(err.response.error.message, 'Error', 5000, 'danger')
+          this.$bvToast.toast(err.response.data.error.message, toastConfig.default)
         })
     }
   }
