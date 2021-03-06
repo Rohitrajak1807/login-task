@@ -14,6 +14,7 @@
 
 <script>
 import NavBlank from './nav/NavBlank'
+import toast from '../utils/ui-utils'
 
 export default {
   name: 'SignUp',
@@ -38,13 +39,7 @@ export default {
         })
         .catch((e) => {
           console.log(e.response.data.error)
-          this.$bvToast.toast(
-            e.response.data.error.message, {
-              variant: 'danger',
-              autoHideDelay: 5000,
-              title: 'Error'
-            }
-          )
+          toast(e.response.data.error.message)
         })
     }
   }

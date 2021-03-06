@@ -18,17 +18,5 @@ new Vue({
   router,
   components: {App},
   template: '<App/>',
-  store: store,
-  computed: {
-    userAvailable () {
-      return store.getters.userIsAvailable
-    },
-    watch: {
-      userAvailable (newStatus, oldStatus) {
-        if (newStatus !== oldStatus) {
-          router.push({path: '/'})
-        }
-      }
-    }
-  }
+  store: store
 })
