@@ -3,7 +3,9 @@
     nav-logged-in
     b-container(fluid="sm").d-flex.flex-column.justify-content-center.h-100
       b-col(cols=5 align-self="center")
-        input(type="checkbox")
+        b-table(striped=true hover=true v-bind:items="skills" v-bind:fields="fields" v-bind:currentPage="currentPage" v-bind:per-page=10)
+          template(v-slot:head(name)="Skill")
+        b-pagination(v-model="currentPage" v-bind:total-rows="totalRows" v-bind:per-page=10)
 </template>
 
 <script>
@@ -17,13 +19,18 @@ export default {
   },
   data () {
     return {
-      skills: []
+      skills: [],
+      fields: [
+        {key: 'name', label: 'Skill', class: 'text-center', sortable: true}
+      ],
+      currentPage: 1,
+      totalRows: 1
     }
   },
-  mounted () {
+  created () {
     this.axios.get('http://localhost:8000/skills').then((res) => {
       this.skills = res.data
-      console.log(res.data)
+      this.totalRows = this.skills.length
     }).catch((e) => {
       console.log(e)
       this.$bvToast.toast(e.response.data.error.message, toastConfig.default)
