@@ -9,6 +9,16 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
+  skills: {
+    type: [String],
+    maxlength: 8
   }
 }, {
   collection: 'users'

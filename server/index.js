@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/users', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
-  useFindAndModify: true
+  useFindAndModify: false
 }).then(() => console.log('Done'))
 app.use(bodyParser.json())
 app.use(cors())
@@ -81,18 +81,26 @@ app.route('/signup').post(async function (req, res) {
 
 app.route('/update-profile').put(async function (req, res) {
   const token = req.headers.authorization.split(' ')[1]
-  jwt.verify(token, SECRET, (err, decoded) => {
-    if (err) {
-      console.log(err)
-      return res.status(400).send({
-        error: {
-          message: 'Please try again',
-          code: 400
-        }
-      })
-    }
+  let payload
+  try {
+    payload = jwt.verify(token, SECRET)
+  } catch (e) {
+    console.log(e)
+    return res.status(400).send({
+      error: {
+        message: 'Please try again',
+        code: 400
+      }
+    })
+  }
+  console.log(req.body)
+  const result = await User.findByIdAndUpdate(payload.id, {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName
+  }, {
+    returnOriginal: false
   })
-  res.send('')
+  console.log(result)
 })
 
 app.listen(PORT, () => console.log(`server started on ${PORT}`))
