@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const User = require('./models/User')
+const Skill = require('./models/Skill')
 const app = express()
 
 mongoose.connect('mongodb://localhost/users', {
@@ -101,6 +102,25 @@ app.route('/update-profile').put(async function (req, res) {
     returnOriginal: false
   })
   console.log(result)
+})
+
+app.route('/skills').get(async function (req, res) {
+  Skill.find({}, {
+    _id: 0,
+    __v: 0
+  }, (err, docs) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).send({
+        error: {
+          message: 'Unable to fetch skills',
+          code: 500
+        }
+      })
+    }
+    console.log(docs)
+    res.status(200).send(docs)
+  })
 })
 
 app.listen(PORT, () => console.log(`server started on ${PORT}`))

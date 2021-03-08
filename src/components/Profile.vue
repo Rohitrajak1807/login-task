@@ -35,7 +35,7 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          this.$router.push({path: '/skills'})
         })
         .catch((err) => {
           console.log(err)
@@ -47,5 +47,8 @@ export default {
 </script>
 
 <style scoped>
-
+#profile {
+  height: 100vh;
+  width: 100%;
+}
 </style>
